@@ -3,49 +3,39 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-function FormattedDate(props) {
-  return <h2> It is {props.date.toLocaleTimeString()}.</h2>;
+class LoggingButton extends React.Component {
+  handleClick = () => {
+    console.log("this is:", this);
+    //this가 handle Click 냉에서 바인딩 되도록 함.
+  };
+
+  render() {
+    return <button onClick={this.handleClick}>Click me</button>;
+  }
 }
 
-class Clock extends React.Component {
+class Toggle extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { date: new Date() };
+    this.state = { isToggleOn: true };
+    //콜백에서 'this'가 작동하려면 바인딩을 해주어야 함.
+    this.handleClick = this.handleClick.bind(this);
   }
 
-  componentDidMount() {
-    this.timerID = setInterval(() => this.tick(), 1000);
-  }
-
-  componentWillUnmount() {
-    clearInterval(this.timerID);
-  }
-
-  tick() {
-    this.setState({
-      date: new Date(),
-    });
+  handleClick() {
+    this.setState((prevState) => ({
+      isToggleOn: !prevState.isToggleOn,
+    }));
   }
 
   render() {
     return (
-      <div>
-        <h1>Hello, world!</h1>
-        <FormattedDate date={this.state.date} />
-      </div>
+      <button onClick={this.handleClick}>
+        {this.state.isToggleOn ? "ON" : "OFF"}
+      </button>
     );
   }
 }
 
-function App() {
-  return (
-    <div>
-      <Clock />
-      <Clock />
-      <Clock />
-    </div>
-  );
-}
-
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<LoggingButton />, document.getElementById("root"));
 reportWebVitals();
