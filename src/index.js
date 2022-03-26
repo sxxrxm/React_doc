@@ -3,39 +3,27 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
 
-class LoggingButton extends React.Component {
-  handleClick = () => {
-    console.log("this is:", this);
-    //this가 handle Click 냉에서 바인딩 되도록 함.
-  };
-
-  render() {
-    return <button onClick={this.handleClick}>Click me</button>;
-  }
+function ListItem(props) {
+  return <li>{props.value}</li>;
 }
 
-class Toggle extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { isToggleOn: true };
-    //콜백에서 'this'가 작동하려면 바인딩을 해주어야 함.
-    this.handleClick = this.handleClick.bind(this);
-  }
+function NumberList(props) {
+  const numbers = props.numbers;
 
-  handleClick() {
-    this.setState((prevState) => ({
-      isToggleOn: !prevState.isToggleOn,
-    }));
-  }
-
-  render() {
-    return (
-      <button onClick={this.handleClick}>
-        {this.state.isToggleOn ? "ON" : "OFF"}
-      </button>
-    );
-  }
+  return (
+    <ul>
+      {numbers.map((number) => (
+        <ListItem key={number.toString()} value={number} />
+      ))}
+    </ul>
+  );
 }
 
-ReactDOM.render(<LoggingButton />, document.getElementById("root"));
+const numbers = [1, 2, 3, 4, 5];
+
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById("root")
+);
+
 reportWebVitals();
